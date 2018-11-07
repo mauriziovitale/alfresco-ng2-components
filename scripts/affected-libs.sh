@@ -32,7 +32,7 @@ fi
 
 #find affected libs
 #npm run affected:libs -- "c30c1a5" "HEAD" > deps.txt
-echo "core" > deps.txt
+echo "process-services-cloud" > deps.txt
 
 #clean file
 sed -i '/^$/d'  ./deps.txt
@@ -115,39 +115,3 @@ do
     fi
 done
 
-#cloud
-for i in "${libs[@]}"
-do
-    if [ "$i" == "process-services-cloud" ] ; then
-        AFFECTED_LIBS="process-services-cloud"
-        echo "AFFECTED_LIBS: ${AFFECTED_LIBS}"
-        rm deps.txt
-        exit 0
-        echo "========= Process Services Cloud ========="
-        echo "====== lint ======"
-        ./node_modules/.bin/tslint -p ./lib/process-services-cloud/tsconfig.json -c ./lib/tslint.json || exit 1
-
-        echo "====== Unit test ======"
-        ng test process-services-cloud --watch=false || exit 1
-
-        echo "====== Build ======"
-        ng build process-services-cloud || exit 1
-
-        echo "====== Build style ======"
-        node ./lib/config/bundle-process-services-cloud-scss.js || exit 1
-
-        echo "====== Copy i18n ======"
-        mkdir -p ./lib/dist/process-services-cloud/bundles/assets/adf-process-services-cloud/i18n
-        cp -R ./lib/process-services-cloud/src/lib/i18n/* ./lib/dist/process-services-cloud/bundles/assets/adf-process-services-cloud/i18n
-
-        echo "====== Copy assets ======"
-        cp -R ./lib/process-services-cloud/src/lib/assets/* ./lib/dist/process-services-cloud/bundles/assets
-
-        echo "====== Move to node_modules ======"
-        rm -rf ./node_modules/@alfresco/adf-process-cloud/ && \
-        mkdir -p ./node_modules/@alfresco/adf-process-services-cloud/ && \
-        cp -R ./lib/dist/process-services-cloud/* ./node_modules/@alfresco/adf-process-services-cloud/
-    fi
-done
-
-rm deps.txt
