@@ -16,7 +16,7 @@ writeZipLib = async function (zipName, zipFolder) {
     let archive = archiver('zip');
 
     archive.pipe(output);
-    archive.directory(path.join(__dirname, `../lib/dist/${zipName}`), zipName);
+    archive.directory(path.join(__dirname, `../node_modules/${zipName}`), zipName);
 
     return archive.finalize();
 };
@@ -37,15 +37,20 @@ async function main() {
         hostEcm: program.host
     });
 
-    let zipFolder = path.join(__dirname, '/../lib/dist/zip/');
+    // let zipFolder = path.join(__dirname, '/../lib/dist/zip/');
 
-    await this.writeZipLib('core', zipFolder);
-    await this.writeZipLib('content-services', zipFolder);
-    await this.writeZipLib('process-services', zipFolder);
-    await this.writeZipLib('insights', zipFolder);
-    await this.writeZipLib('process-services-cloud', zipFolder);
+    // await this.writeZipLib('core', zipFolder);
+    // await this.writeZipLib('content-services', zipFolder);
+    // await this.writeZipLib('process-services', zipFolder);
+    // await this.writeZipLib('insights', zipFolder);
+    // await this.writeZipLib('process-services-cloud', zipFolder);
 
-    let files = fs.readdirSync(path.join(__dirname, '../lib/dist/zip'));
+    let zipFolder = path.join(__dirname, '/../node_modules/@alfresco/zip/');
+    await this.writeZipLib('@alfresco', zipFolder);
+
+    // let files = fs.readdirSync(path.join(__dirname, '../lib/dist/zip'));
+
+    let files = fs.readdirSync(path.join(__dirname, '../node_modules/@alfresco/zip'));
 
     if (files && files.length > 0) {
 
