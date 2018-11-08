@@ -32,7 +32,7 @@ fi
 
 #find affected libs
 #npm run affected:libs -- "c30c1a5" "HEAD" > deps.txt
-echo "process-services-cloud" > deps.txt
+echo "content-services process-services-cloud" > deps.txt
 
 #clean file
 sed -i '/^$/d'  ./deps.txt
