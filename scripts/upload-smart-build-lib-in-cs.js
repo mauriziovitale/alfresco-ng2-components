@@ -12,7 +12,9 @@ writeZipLib = async function (zipName, zipFolder) {
     }
 
     // create a file to stream archive data to.
-    let output = fs.createWriteStream(path.join(zipFolder, `${zipName}.zip`));
+    let pathFolder = path.join(zipFolder, `${zipName}.zip`);
+    console.log(`Path: ${pathFolder}`);
+    let output = fs.createWriteStream(pathFolder);
     let archive = archiver('zip');
 
     archive.pipe(output);
