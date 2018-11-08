@@ -19,71 +19,71 @@ before_install:
 
 jobs:
     include:
-        #- stage: Warm Up Cache & Lint
-        #  script:  if ([ "$TRAVIS_BRANCH" = "master" ]); then
-        #        (./scripts/npm-build-all.sh  || exit 1;);
-        #    else
-        #        (./scripts/update-version.sh -gnu -alpha && npm install && ./scripts/lint.sh && npm run spellcheck || exit 1;);
-        #    fi
+        - stage: Warm Up Cache & Lint
+          script:  if ([ "$TRAVIS_BRANCH" = "master" ]); then
+                (./scripts/npm-build-all.sh  || exit 1;);
+            else
+                (./scripts/update-version.sh -gnu -alpha && npm install && ./scripts/lint.sh && npm run spellcheck || exit 1;);
+            fi
         #- stage: Lint
         #  script:
         #    - ./scripts/lint.sh
         #    - npm run spellcheck
-        # - stage: Unit test
-        #    env: STAGE=co re
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED _LIBS =~ "core$"     ]];
-        #   then
-        #       ng test core --wa   tch=false || ex    it 1;
-        #   fi
-        # - stage: Unit test
-        # env: ST   AGE=process-servic es
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED_LIBS =~ "pr ocess-services$"     ]];
-        #   then
-        #       ng test process-services --wa   tch=false || ex    it 1;
-        #   fi
-        # - stage: Unit test
-        # env: ST   AGE=content-servic es
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED_LIBS =~ "co ntent-services$"     ]];
-        #   then
-        #       ng test content-services --wa   tch=false || ex    it 1;
-        #   fi
-        # - stage: Unit test
-        # env: STAGE=pr ocess-services-clo   ud
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED_LIBS =~ "process-   services-cloud$"   ]];
-        #   then
-        #       ng test process-services-cloud --wa tch=false || ex  it 1;
-        #   fi
-        # - stage: Unit test
-        # e nv: STAGE=extensio   ns
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED_LIBS    =~ "extensions$"   ]];
-        #   then
-        #       ng test extensions --wa tch=false || ex  it 1;
-        #   fi
-        # - stage: Unit test
-        #    env: STAGE=insigh ts
-        # script:
-        #   AFFECTED_LIBS="$(./scripts/affected-libs.sh     -b $TRAVIS_BRANCH)";
-        #   if [[ $AFFECTED_LIB S =~ "insights$"     ]];
-        #   then
-        #       ng test insights --wa   tch=false || ex    it 1;
-        #   fi
-        # - stage: Unit test
-        # e nv: STAGE=demo-shell
-        # script:   if ([ "$TRAVIS_BRANCH"   = "master" ]); then
-        #                   (./scripts/start.sh  -t -ss || exit 1;);
-        #               else
-        #                   ng test dev --wa    tch=false || exit 1;
-        #             fi
+        - stage: Unit test
+          env: STAGE=core
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "core$" ]];
+            then
+                ng test core --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=process-services
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "process-services$" ]];
+            then
+                ng test process-services --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=content-services
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "content-services$" ]];
+            then
+                ng test content-services --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=process-services-cloud
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "process-services-cloud$" ]];
+            then
+                ng test process-services-cloud --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=extensions
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "extensions$" ]];
+            then
+                ng test extensions --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=insights
+          script:
+            AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            if [[ $AFFECTED_LIBS =~ "insights$" ]];
+            then
+                ng test insights --watch=false || exit 1;
+            fi
+        - stage: Unit test
+          env: STAGE=demo-shell
+          script:   if ([ "$TRAVIS_BRANCH" = "master" ]); then
+                            (./scripts/start.sh -t -ss || exit 1;);
+                       else
+                            (./scripts/start.sh -dev -t -ss -vjsapi alpha || exit 1;);
+                    fi
         - stage: Packaging & Create Shell dist
           script:  (./scripts/smart-build.sh || exit 1;) && (npm run build:dist || exit 1;) && (node ./scripts/upload-build-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f  $TRAVIS_BUILD_NUMBER || exit 1;)
         - stage: Update children projects dependency #Update generator-ng2-alfresco-app
