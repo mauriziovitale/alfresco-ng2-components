@@ -32,7 +32,7 @@ fi
 
 #find affected libs
 #npm run affected:libs -- "c30c1a5" "HEAD" > deps.txt
-echo "content-services process-services-cloud" > deps.txt
+echo "process-services content-services" > deps.txt
 
 #clean file
 sed -i '/^$/d'  ./deps.txt
@@ -64,10 +64,7 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "process-services" ] ; then
-        AFFECTED_LIBS="process-services$"
-        rm deps.txt
-        echo "${AFFECTED_LIBS}"
-        exit 0
+        AFFECTED_LIBS=$AFFECTED_LIBS" process-services$"
     fi
 done
 
@@ -75,10 +72,7 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "content-services" ] ; then
-        AFFECTED_LIBS="content-services$ process-services$"
-        rm deps.txt
-        echo "${AFFECTED_LIBS}"
-        exit 0
+        AFFECTED_LIBS=$AFFECTED_LIBS" content-services$"
     fi
 done
 
@@ -86,10 +80,7 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "insights" ] ; then
-        AFFECTED_LIBS="insights$"
-        rm deps.txt
-        echo "${AFFECTED_LIBS}"
-        exit 0
+        AFFECTED_LIBS=$AFFECTED_LIBS" insights$"
     fi
 done
 
@@ -97,10 +88,7 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "extensions" ] ; then
-        AFFECTED_LIBS="extensions$"
-        rm deps.txt
-        echo "${AFFECTED_LIBS}"
-        exit 0
+        AFFECTED_LIBS=$AFFECTED_LIBS" extensions$"
     fi
 done
 
@@ -108,10 +96,9 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "process-services-cloud" ] ; then
-        AFFECTED_LIBS="process-services-cloud$"
-        rm deps.txt
-        echo "${AFFECTED_LIBS}"
-        exit 0
+        AFFECTED_LIBS=$AFFECTED_LIBS" process-services-cloud$"
     fi
 done
 
+rm deps.txt
+echo "${AFFECTED_LIBS}"

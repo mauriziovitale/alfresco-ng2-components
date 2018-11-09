@@ -4,8 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd $DIR/..
 
-echo "========= Process Services Cloud ========="
-
+echo "====== Process Services Cloud ======"
 echo "====== Build ======"
 ng build process-services-cloud || exit 1
 
@@ -20,6 +19,6 @@ echo "====== Copy assets ======"
 cp -R ./lib/process-services-cloud/src/lib/assets/* ./lib/dist/process-services-cloud/bundles/assets
 
 echo "====== Move to node_modules ======"
-rm -rf ./node_modules/@alfresco/adf-process-cloud/ && \
+rm -rf ./node_modules/@alfresco/adf-process-services-cloud/ && \
 mkdir -p ./node_modules/@alfresco/adf-process-services-cloud/ && \
 cp -R ./lib/dist/process-services-cloud/* ./node_modules/@alfresco/adf-process-services-cloud/
