@@ -12,7 +12,7 @@ do
     fi
 done
 
-#process-services-cloud$
+#process-services-cloud
 for i in "${libs[@]}"
 do
     if [ "$i" == "process-services-cloud$" ] ; then
@@ -20,7 +20,7 @@ do
     fi
 done
 
-#content-services$
+#content-services
 for i in "${libs[@]}"
 do
     if [ "$i" == "content-services$" ] ; then
@@ -29,7 +29,7 @@ do
     fi
 done
 
-#process-services$
+#process-services
 for i in "${libs[@]}"
 do
     if [ "$i" == "process-services$" ] ; then
