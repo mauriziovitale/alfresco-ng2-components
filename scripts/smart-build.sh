@@ -37,3 +37,21 @@ do
         ./scripts/build-process-services-cloud.sh
     fi
 done
+
+#insights
+for i in "${libs[@]}"
+do
+    if [ "$i" == "insights$" ] ; then
+        echo "insights"
+        ./scripts/build-insights.sh
+    fi
+done
+
+#extensions
+for i in "${libs[@]}"
+do
+    if [ "$i" == "extensions$" ] ; then
+        echo "extensions"
+        ./scripts/build-extensions.sh
+    fi
+done
