@@ -32,7 +32,7 @@ fi
 
 #find affected libs
 #npm run affected:libs -- "c30c1a5" "HEAD" > deps.txt
-echo "core" > deps.txt
+echo "extensions" > deps.txt
 
 #clean file
 sed -i '/^$/d'  ./deps.txt
