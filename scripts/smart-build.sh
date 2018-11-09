@@ -6,9 +6,24 @@ libs=(`echo $affected | sed 's/^$/\n/g'`)
 #core
 for i in "${libs[@]}"
 do
-    if [ "$i" == "core" ] ; then
-        #compile everythings
-        exit 0
+    if [ "$i" == "core$" ] ; then
+        ./scripts/build-core.sh
+    fi
+done
+
+#content-services
+for i in "${libs[@]}"
+do
+    if [ "$i" == "content-services$" ] ; then
+        ./scripts/build-content-services.sh
+    fi
+done
+
+#process-services
+for i in "${libs[@]}"
+do
+    if [ "$i" == "process-services$" ] ; then
+        ./scripts/build-process-services-cloud.sh
     fi
 done
 
@@ -20,29 +35,10 @@ do
     fi
 done
 
-#content-services
-for i in "${libs[@]}"
-do
-    if [ "$i" == "content-services$" ] ; then
-        echo "content"
-        ./scripts/build-content-services.sh
-    fi
-done
-
-#process-services
-for i in "${libs[@]}"
-do
-    if [ "$i" == "process-services$" ] ; then
-        echo "process-services"
-        ./scripts/build-process-services-cloud.sh
-    fi
-done
-
 #insights
 for i in "${libs[@]}"
 do
     if [ "$i" == "insights$" ] ; then
-        echo "insights"
         ./scripts/build-insights.sh
     fi
 done
@@ -51,7 +47,6 @@ done
 for i in "${libs[@]}"
 do
     if [ "$i" == "extensions$" ] ; then
-        echo "extensions"
         ./scripts/build-extensions.sh
     fi
 done
