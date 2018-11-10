@@ -32,8 +32,8 @@ HEAD_SHA_BRANCH="$(git merge-base origin/$BRANCH_NAME HEAD)"
 echo "Branch name $BRANCH_NAME HEAD sha " $HEAD_SHA_BRANCH
 
 #find affected libs
-#npm run affected:libs -- "c30c1a5" "HEAD" > deps.txt
-echo "extensions" > deps.txt
+npm run affected:libs -- $HEAD_SHA_BRANCH "HEAD" > deps.txt
+#echo "extensions" > deps.txt
 
 #clean file
 sed -i '/^$/d'  ./deps.txt
