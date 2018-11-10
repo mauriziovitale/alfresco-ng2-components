@@ -19,6 +19,18 @@ before_install:
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
 
+stages:
+- name: Warm Up Cache & Lint
+if: tag = "beta"
+- name: Unit test
+- name: Packaging & Create Shell dist
+- name: e2e Test
+if: tag = "beta"
+- name: Create Docker PR
+if: tag = "beta"
+- name: Deploy Docker PR
+if: tag = "beta"
+
 jobs:
     include:
         - stage: Warm Up Cache & Lint
