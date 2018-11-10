@@ -7,6 +7,16 @@ node_js:
 
 cache: npm
 
+stages:
+  - name: Warm Up Cache & Lint
+    if: branch = master
+  - name: Unit test
+  - name: Packaging & Create Shell dist
+  - name: Create Docker PR
+    if: branch = master
+  - name: Deploy Docker PR
+    if: branch = master
+
 addons:
     chrome: stable
 before_script:
@@ -18,18 +28,6 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
-
-stages:
-- name: Warm Up Cache & Lint
-if: tag = "beta"
-- name: Unit test
-- name: Packaging & Create Shell dist
-- name: e2e Test
-if: tag = "beta"
-- name: Create Docker PR
-if: tag = "beta"
-- name: Deploy Docker PR
-if: tag = "beta"
 
 jobs:
     include:
