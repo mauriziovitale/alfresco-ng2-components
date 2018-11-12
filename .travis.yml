@@ -11,18 +11,8 @@ cache:
   - demo-shell/dist
 
 stages:
-  - name: Warm Up Cache
-    if: branch = master
-  - name: Warm Up Cache & Lint
-    if: branch = master
-  - name: Unit test
-    if: branch = master
-  - name: Packaging & Create Shell dist
-    if: branch = master
-  - name: mockdist
-  - name: e2e Test
-  - name: Create Docker PR
-  - name: Deploy Docker PR
+  - name: create-cache
+  - name: use-cache
 
 addons:
     chrome: stable
@@ -38,15 +28,14 @@ before_install:
 
 jobs:
     include:
-        - stage: Warm Up Cache
+        - stage: create-cache
           script:
-          - (./scripts/npm-build-all.sh || exit 1;);
-          - (./scripts/lint.sh || exit 1;);
-        - stage: Warm Up Cache & Lint
+          - mkdir demo-shell/file.txt
+          - echo cache test>demo-shell/dist/file.txt
+          - cat demo-shell/dist/file.txt
+        - stage: use-cache
           script:
-          - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
-          - (./scripts/lint.sh || exit 1;);
-          - (npm run spellcheck || exit 1;)
+          - cat demo-shell/dist/file.txt
         - stage: Unit test
           env: STAGE=core
           script:
