@@ -13,6 +13,9 @@ cache:
 stages:
   - name: create-cache
   - name: use-cache
+  - name: e2e Test
+  - name: Packaging & create shell dist
+    if: branch = master
 
 addons:
     chrome: stable
@@ -30,11 +33,12 @@ jobs:
     include:
         - stage: create-cache
           script:
-          - echo cache test>demo-shell/dist/file.txt
-          - cat demo-shell/dist/file.txt
+          - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
+          - (npm run build:dist || exit 1;)
+          - cat demo-shell/dist/app.config.json
         - stage: use-cache
           script:
-          - cat demo-shell/dist/file.txt
+          - cat demo-shell/dist/app.config.json
         - stage: Unit test
           env: STAGE=core
           script:
