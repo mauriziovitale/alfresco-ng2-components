@@ -18,6 +18,7 @@ stages:
   - name: Unit test
     if: branch = master
   - name: Packaging & Create Shell dist
+  - name: Check dist
   - name: e2e Test
     if: branch = master
   - name: Create Docker PR
@@ -107,7 +108,7 @@ jobs:
           - (./scripts/smart-build.sh || exit 1;);
           - (npm run build:dist || exit 1;);
           - cat demo-shell/dist/versions.json
-          - stage: Check dist
+        - stage: Check dist
           script:
           - cat demo-shell/dist/versions.json
         - stage: Update children projects dependency #Update generator-ng2-alfresco-app
