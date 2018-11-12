@@ -14,10 +14,12 @@ stages:
   - name: Warm Up Cache
     if: branch = master
   - name: Warm Up Cache & Lint
-    if: branch != master
+    if: branch = master
   - name: Unit test
+    if: branch = master
   - name: Packaging & Create Shell dist
   - name: e2e Test
+    if: branch = master
   - name: Create Docker PR
   - name: Deploy Docker PR
 
