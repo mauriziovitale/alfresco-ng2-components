@@ -107,10 +107,6 @@ jobs:
           - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
           - (./scripts/smart-build.sh || exit 1;);
           - (npm run build:dist || exit 1;);
-          - (touch demo-shell/dist/ || exit 1;) && (cat demo-shell/dist/versions.json || exit 1;)
-        - stage: Check dist
-          script:
-          - (touch demo-shell/dist/ || exit 1;) && (cat demo-shell/dist/versions.json || exit 1;)
         - stage: Update children projects dependency #Update generator-ng2-alfresco-app
           if: tag =~ .*beta.*
           script: ./scripts/update-project.sh -gnu -t $GITHUB_TOKEN -n generator-ng2-alfresco-app
