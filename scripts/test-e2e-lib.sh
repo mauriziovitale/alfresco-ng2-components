@@ -150,7 +150,8 @@ else
     if [[  $LITESERVER == "true" ]]; then
         echo "====== Run dist in lite-server ====="
         pwd
-        ls $TRAVIS_BUILD_DIR/demo-shell/dist
+        ls /home/travis/build/mauriziovitale/alfresco-ng2-components-smart/demo-shell/dist
+        cd /home/travis/build/mauriziovitale/alfresco-ng2-components-smart/demo-shell/dist
         pwd
         npm run lite-server-e2e>/dev/null & ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1
     else
