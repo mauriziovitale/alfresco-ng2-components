@@ -127,7 +127,7 @@ jobs:
         - stage: mockdist
           script:
           - pwd
-          - mkdir $TRAVIS_BUILD_DIR/demo-shell/dist && touch $TRAVIS_BUILD_DIR/demo-shell/dist/file.txt
+          - touch $TRAVIS_BUILD_DIR/demo-shell/dist/file.txt
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
