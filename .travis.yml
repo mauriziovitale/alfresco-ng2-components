@@ -5,18 +5,18 @@ node_js:
  # Use the explicit NodeJS LTS version 8.9.4 to avoid any automatic upgrade of the version.
   - '8.9.4'
 
-cache: npm
+cache:
+   directories:
+   - node_modules
+   - demo-shell/dist
 
 stages:
-  - name: Warm Up Cache
-    if: branch = master
-  - name: Warm Up Cache & Lint
-    if: branch != master
-  - name: Unit test
-  - name: Packaging & Create Shell dist
+  - name: create-cache
+  - name: use-cache
+  - name: e2e
   - name: e2e Test
-  - name: Create Docker PR
-  - name: Deploy Docker PR
+  - name: Packaging & create shell dist
+    if: branch = master
 
 addons:
     chrome: stable
@@ -32,15 +32,14 @@ before_install:
 
 jobs:
     include:
-        - stage: Warm Up Cache
-          script:
-          - (./scripts/npm-build-all.sh || exit 1;);
-          - (./scripts/lint.sh || exit 1;);
-        - stage: Warm Up Cache & Lint
+        - stage: create-cache
           script:
           - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
-          - (./scripts/lint.sh || exit 1;);
-          - (npm run spellcheck || exit 1;)
+          - (npm run build:dist || exit 1;)
+          - cat demo-shell/dist/app.config.json
+        - stage: use-cache
+          script:
+          - cat demo-shell/dist/app.config.json
         - stage: Unit test
           env: STAGE=core
           script:
@@ -118,6 +117,9 @@ jobs:
           script: ./scripts/update-project.sh -gnu -t $GITHUB_TOKEN -n alfresco-modeler-app
         #- stage: Create Shell dist
         #  script: rm -rf ./node_modules/@alfresco; node ./scripts/download-smart-build-lib-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f $TRAVIS_BUILD_NUMBER || exit 1; npm run build:dist || exit 1
+        - stage: e2e
+          script:
+            - (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;)
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
@@ -199,6 +201,3 @@ after_success:
     bash <(curl -s https://codecov.io/bash) -X gcov
 
 
-cache:
-  directories:
-  - node_modules
