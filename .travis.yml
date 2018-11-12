@@ -30,7 +30,7 @@ jobs:
     include:
         - stage: create-cache
           script:
-          - mkdir demo-shell/file.txt
+          - mkdir demo-shell/dist
           - echo cache test>demo-shell/dist/file.txt
           - cat demo-shell/dist/file.txt
         - stage: use-cache
