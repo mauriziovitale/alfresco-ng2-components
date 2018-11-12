@@ -149,7 +149,9 @@ else
     webdriver-manager update --gecko=false --versions.chrome=2.38
     if [[  $LITESERVER == "true" ]]; then
         echo "====== Run dist in lite-server ====="
-        ls ${TRAVIS_BUILD_DIR}/demo-shell/dist
+        pwd
+        ls $TRAVIS_BUILD_DIR/demo-shell/dist
+        pwd
         npm run lite-server-e2e>/dev/null & ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1
     else
          ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1

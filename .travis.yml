@@ -18,6 +18,8 @@ stages:
   - name: Unit test
     if: branch = master
   - name: Packaging & Create Shell dist
+    if: branch = master
+  - name: mockdist
   - name: e2e Test
   - name: Create Docker PR
   - name: Deploy Docker PR
@@ -122,6 +124,10 @@ jobs:
           script: ./scripts/update-project.sh -gnu -t $GITHUB_TOKEN -n alfresco-modeler-app
         #- stage: Create Shell dist
         #  script: rm -rf ./node_modules/@alfresco; node ./scripts/download-smart-build-lib-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f $TRAVIS_BUILD_NUMBER || exit 1; npm run build:dist || exit 1
+        - stage: mockdist
+          script:
+          - pwd
+          - mkdir $TRAVIS_BUILD_DIR/demo-shell/dist && touch $TRAVIS_BUILD_DIR/demo-shell/dist/file.txt
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
