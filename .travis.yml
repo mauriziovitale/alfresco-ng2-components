@@ -194,6 +194,3 @@ after_success:
     bash <(curl -s https://codecov.io/bash) -X gcov
 
 
-cache:
-  directories:
-  - node_modules
