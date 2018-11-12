@@ -19,6 +19,7 @@ stages:
     if: branch = master
   - name: Packaging & Create Shell dist
   - name: use-cache
+  - name: e2ecore
   - name: e2e Test
   - name: Create Docker PR
   - name: Deploy Docker PR
@@ -127,6 +128,9 @@ jobs:
           script: ./scripts/update-project.sh -gnu -t $GITHUB_TOKEN -n alfresco-modeler-app
         #- stage: Create Shell dist
         #  script: rm -rf ./node_modules/@alfresco; node ./scripts/download-smart-build-lib-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f $TRAVIS_BUILD_NUMBER || exit 1; npm run build:dist || exit 1
+        - stage: e2ecore
+          script:
+           - (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;)
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
