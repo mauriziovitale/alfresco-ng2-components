@@ -149,7 +149,8 @@ else
     webdriver-manager update --gecko=false --versions.chrome=2.38
     if [[  $LITESERVER == "true" ]]; then
         echo "====== Run dist in lite-server ====="
-        ls demo-shell/dist
+        pwd
+        cat /home/travis/build/mauriziovitale/alfresco-ng2-components-smart/demo-shell/dist/file.txt
         npm run lite-server-e2e>/dev/null & ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1
     else
          ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1

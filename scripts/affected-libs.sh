@@ -50,6 +50,7 @@ done < "./deps.txt"
 #transform string to array
 libs=(`echo $fileLine | sed 's/^$/\n/g'`)
 
+AFFECTED_LIBS="core"
 #core
 for i in "${libs[@]}"
 do
