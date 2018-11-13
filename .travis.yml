@@ -18,7 +18,6 @@ stages:
   - name: Unit test
     if: branch = master
   - name: Packaging & Create Shell dist
-  - name: use-cache
   - name: e2ecore
   - name: e2e Test
   - name: Create Docker PR
@@ -108,9 +107,6 @@ jobs:
           - (./scripts/smart-build.sh || exit 1;);
           - (npm run build:dist || exit 1;)
           - cat demo-shell/dist/app.config.json
-        - stage: use-cache
-          script:
-          - cat demo-shell/dist/app.config.json
         - stage: Update children projects dependency #Update generator-ng2-alfresco-app
           if: tag =~ .*beta.*
           script: ./scripts/update-project.sh -gnu -t $GITHUB_TOKEN -n generator-ng2-alfresco-app
@@ -134,7 +130,11 @@ jobs:
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
-           - (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;);
+            - AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            - if [[ $AFFECTED_LIBS =~ "core$" ]];
+              then
+                (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;);
+              fi
         - stage: e2e Test # Test process-services-cloud
           env: STAGE=process-services-cloud
           script:
