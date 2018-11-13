@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+echo "test: $AFFECTED_LIBS";
+
 cd "$DIR/../"
 BROWSER_RUN=false
 DEVELOPMENT=false
@@ -149,6 +151,7 @@ else
     webdriver-manager update --gecko=false --versions.chrome=2.38
     if [[  $LITESERVER == "true" ]]; then
         echo "====== Run dist in lite-server ====="
+        pwd
         ls demo-shell/dist
         npm run lite-server-e2e>/dev/null & ./node_modules/protractor/bin/protractor protractor.conf.js || exit 1
     else
