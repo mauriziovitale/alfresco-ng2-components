@@ -41,6 +41,8 @@ jobs:
           - (./scripts/lint.sh || exit 1;);
         - stage: Warm Up Cache & Lint & Build Dist
           script:
+          - echo "cancel build"
+          - travis cancel $TRAVIS_BUILD_NUMBER
           - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
           - (./scripts/lint.sh || exit 1;);
           - (npm run spellcheck || exit 1;)
