@@ -55,6 +55,10 @@ set_proxy(){
     PROXY=$1
 }
 
+set_port(){
+    HOST_PORT=$1
+}
+
 set_timeout(){
     TIMEOUT=$1
 }
@@ -109,6 +113,7 @@ while [[ $1 == -* ]]; do
       -ud|--use-dist)  lite_server; shift;;
       -save)   set_save_screenshot; shift;;
       -proxy|--proxy)  set_proxy $2; shift 2;;
+      -port|--port)  set_port $2; shift 2;;
       -s|--seleniumServer) set_selenium $2; shift 2;;
       -host|--host)  set_host $2; shift 2;;
       -sl|--skip-lint)  skip_lint; shift;;
@@ -131,7 +136,7 @@ export TIMEOUT=$TIMEOUT
 export FOLDER=$FOLDER'/'
 export SELENIUM_SERVER=$SELENIUM_SERVER
 export NAME_TEST=$NAME_TEST
-
+export HOST_PORT=$HOST_PORT
 
 if $EXEC_VERSION_JSAPI == true; then
   echo "====== Use the alfresco JS-API '$JSAPI_VERSION'====="

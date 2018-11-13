@@ -1,4 +1,5 @@
 var PROXY_HOST_ADF = process.env.PROXY_HOST_ADF;
+var HOST_PORT = process.env.HOST_PORT;
 var HOST = process.env.URL_HOST_ADF;
 
 let proxy = require('http-proxy-middleware');
@@ -7,7 +8,7 @@ let targetProxy = 'http://' + (PROXY_HOST_ADF || HOST);
 let fallback = require('connect-history-api-fallback');
 
 module.exports = {
-    'port': 4200,
+    'port': HOST_PORT,
     open: false,
     server: {
         middleware: {
