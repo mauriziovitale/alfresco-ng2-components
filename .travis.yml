@@ -20,6 +20,7 @@ stages:
   - name: Packaging & Create Shell dist
     if: branch = master
   - name: simulatedist
+  - name: e2ecore
   - name: e2e Test
   - name: Create Docker PR
   - name: Deploy Docker PR
@@ -129,10 +130,13 @@ jobs:
           script:
            - echo cache test1>demo-shell/dist/file1.txt
            - echo cache test2>demo-shell/dist/file2.txt
+        - stage: e2ecore # Test core
+          script:
+            - (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;);
         - stage: e2e Test # Test core
           env: STAGE=core
           script:
-            - AFFECTED_LIBS="$(./scripts/affected-libs.sh -b $TRAVIS_BRANCH)";
+            - AFFECTED_LIBS="core$";
             - if [[ $AFFECTED_LIBS =~ "core$" ]];
               then
                 (./scripts/test-e2e-lib.sh -host localhost:4200 -proxy "$E2E_HOST" -u "$E2E_USERNAME" -p "$E2E_PASSWORD" -e $E2E_EMAIL -b -save --folder core --skip-lint --use-dist --timeout 7000 || exit 1;);
