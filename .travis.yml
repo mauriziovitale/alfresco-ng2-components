@@ -14,7 +14,7 @@ cache:
 stages:
   - name: Warm Up Cache
     if: branch = master
-  - name: Warm Up Cache & Lint & Lint & Build Dist
+  - name: Warm Up Cache & Lint & Build Dist
     if: branch != master
   - name: Packaging & Create Shell dist
     if: branch = master
@@ -41,7 +41,7 @@ jobs:
           script:
           - (./scripts/npm-build-all.sh || exit 1;);
           - (./scripts/lint.sh || exit 1;);
-        - stage: Warm Up Cache & Lint & Lint & Build Dist
+        - stage: Warm Up Cache & Lint & Build Dist
           script:
           - (./scripts/update-version.sh -gnu -alpha && npm install || exit 1;);
           - (./scripts/lint.sh || exit 1;);
