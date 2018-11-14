@@ -47,7 +47,7 @@ jobs:
           - (npm run spellcheck || exit 1;)
           - rm -rf tmp && (./scripts/smart-build.sh || exit 1;);
           - (npm run build:dist || exit 1;);
-          - node ./scripts/upload-build-lib-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f $TRAVIS_BUILD_NUMBER
+          - node ./scripts/upload-build-in-cs.js -u "$E2E_USERNAME"  -p "$E2E_PASSWORD" --host "$E2E_HOST" -f $TRAVIS_BUILD_NUMBER
         - stage: Unit test
           name: core
           script:
