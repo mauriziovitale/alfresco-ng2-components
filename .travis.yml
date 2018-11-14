@@ -17,9 +17,12 @@ stages:
   - name: Warm Up Cache & Lint & Build Dist
     if: branch != master
   - name: Unit test
+    if: branch = master
   - name: e2e Test
   - name: Create Docker PR
+    if: branch = master
   - name: Deploy Docker PR
+    if: branch = master
 
 addons:
     chrome: stable
