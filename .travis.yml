@@ -11,6 +11,11 @@ cache:
   - demo-shell/dist
   - tmp
 
+branches:
+  only:
+  - master
+  - development
+
 stages:
   - name: Warm Up Cache
     if: branch = master
