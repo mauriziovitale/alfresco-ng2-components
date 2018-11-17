@@ -31,9 +31,6 @@ addons:
 before_script:
     - "sudo chown root /opt/google/chrome/chrome-sandbox"
     - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
-    - $TRAVIS_JOB_ID
-    - $TRAVIS_JOB_NUMBER
-    - $TRAVIS_JOB_WEB_URL
 
 before_install:
     - export CHROME_BIN=chromium-browser
@@ -49,6 +46,7 @@ jobs:
           - (./scripts/lint.sh || exit 1;);
         - stage: Warm Up Cache & Lint & Build Dist
           script:
+          - ./scripts/travis-job.sh $TRAVIS_JOB_ID
           - (./scripts/update-version.sh -gnu -alpha || exit 1;);
           - npm install
           - (./scripts/lint.sh || exit 1;);
