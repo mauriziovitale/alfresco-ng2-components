@@ -48,8 +48,8 @@ jobs:
           - (./scripts/lint.sh || exit 1;);
         - stage: Warm Up Cache & Lint & Build Dist
           script:
-          - echo 'stampo ' $type ;
-          - echo 'stampo ' $branch ;
+          - echo 'stampo ' type ;
+          - echo 'stampo ' branch ;
           - echo 'stampo ' $TRAVIS_PULL_REQUEST ;
           - (./scripts/update-version.sh -gnu -alpha || exit 1;);
           - npm install
