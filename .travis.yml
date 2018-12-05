@@ -24,6 +24,7 @@ stages:
   - name: Unit test
   - name: e2e Test
   - name: Create Docker PR
+    if: branch = master
   - name: Deploy Docker PR
 
 addons:
@@ -37,6 +38,7 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
+    - echo type
 
 jobs:
     include:
@@ -46,6 +48,9 @@ jobs:
           - (./scripts/lint.sh || exit 1;);
         - stage: Warm Up Cache & Lint & Build Dist
           script:
+          - echo 'stampo ' type ;
+          - echo 'stampo ' branch ;
+          - echo 'stampo ' $TRAVIS_PULL_REQUEST ;
           - (./scripts/update-version.sh -gnu -alpha || exit 1;);
           - npm install
           - (./scripts/lint.sh || exit 1;);
