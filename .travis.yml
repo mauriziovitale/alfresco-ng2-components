@@ -30,6 +30,7 @@ script:
 # TRAVIS_PULL_REQUEST == false means is running on dev branch and is not a PR
 stages:
   - name: Warm Up Cache & Lint & Build Dist
+    if $HEAD_SHA_BRANCH = "core"
   - name: Unit test
   - name: e2e Test
   - name: Deploy PR
@@ -54,14 +55,15 @@ jobs:
             - echo "Stampo2:" $HEAD_SHA_BRANCH
             - echo 'Warm'
         - stage: Unit test
-          if: HEAD_SHA_BRANCH ='core'
+          if: HEAD_SHA_BRANCH = 'core'
           name: core
           script:  echo 'core'
         - stage: Unit test
+          if: HEAD_SHA_BRANCH = 'foo'
           name: content
           script:  echo 'content'
         - stage: Unit test
-          if: HEAD_SHA_BRANCH ='core'
+          if: HEAD_SHA_BRANCH = 'core'
           name: process
           script: echo 'process'
 
