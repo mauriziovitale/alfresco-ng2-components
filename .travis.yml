@@ -22,6 +22,11 @@ branches:
   - /.*beta.*/
   - /.*greenkeeper.*/
 
+script:
+    - export HEAD_SHA_BRANCH="core"
+    - echo "Stampo1:" $HEAD_SHA_BRANCH
+
+
 # TRAVIS_PULL_REQUEST == false means is running on dev branch and is not a PR
 stages:
   - name: Warm Up Cache & Lint & Build Dist
@@ -49,14 +54,14 @@ jobs:
             - echo "Stampo2:" $HEAD_SHA_BRANCH
             - echo 'Warm'
         - stage: Unit test
-          if: HEAD_SHA_BRANCH ='c8274bba1530e9705dc98d7466b2d1db420a473c'
+          if: HEAD_SHA_BRANCH ='core'
           name: core
           script:  echo 'core'
         - stage: Unit test
           name: content
           script:  echo 'content'
         - stage: Unit test
-          if: HEAD_SHA_BRANCH ='c8274bba1530e9705dc98d7466b2d1db420a473c'
+          if: HEAD_SHA_BRANCH ='core'
           name: process
           script: echo 'process'
 
