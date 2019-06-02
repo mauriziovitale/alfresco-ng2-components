@@ -1,3 +1,6 @@
+git:
+  depth: 3
+  quiet: true
 language: node_js
 dist: trusty
 sudo: required
@@ -5,32 +8,24 @@ node_js:
  # Use the explicit NodeJS LTS version 8.9.4 to avoid any automatic upgrade of the version.
   - '8.9.4'
 
-cache:
-  directories:
-  - node_modules
-  - demo-shell/dist
-  - tmp
+install:
+    echo "no install"
 
 branches:
   only:
   - master
   - development
+  - /.*old-env.*/
+  - /.*next-release.*/
+  - /.*beta.*/
+  - /.*greenkeeper.*/
 
-jobs:
-    include:
-        - stage: Warm Up
-          name:  Warm Up
-          env: AFFECTED='core'
-          script:
-             echo 'warm'
-        - stage: Unit test
-          if: AFFECTED ='core'
-          name: core
-          script:  echo 'core'
-        - stage: Unit test
-          if: AFFECTED ='process'
-          name: process
-          script:  echo 'core'
+# TRAVIS_PULL_REQUEST == false means is running on dev branch and is not a PR
+stages:
+  - name: Warm Up Cache & Lint & Build Dist
+  - name: Unit test
+  - name: e2e Test
+  - name: Deploy PR
 
 addons:
     chrome: stable
@@ -43,30 +38,32 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
-# jobs:
-#   include:
-#     - stage: Publish alpha to NPM
-#       before_install: skip
-#       install: skip
-#       script: skip
-#       deploy:
-#         provider: script
-#         script: (./scripts/update-version.sh -v $(./scripts/next_version.sh)-$(git rev-parse HEAD) -vj $(npm view alfresco-js-api@alpha version) -gnu) && (./scripts/npm-publish.sh -r $NPM_REGISTRY_ADDRESS -token $NPM_REGISTRY_TOKEN -t alpha --sleep 20 || exit 1;);
-#         on:
-#           branch: development
-#         skip_cleanup: true
-#     - stage: Publish beta to NPM
-#       before_install: skip
-#       install: skip
-#       script: skip
-#       deploy:
-#         provider: script
-#         script: (./scripts/update-version.sh -v $TRAVIS_TAG -gnu) && (./scripts/npm-publish.sh -r $NPM_REGISTRY_ADDRESS -token $NPM_REGISTRY_TOKEN -t beta --sleep 20 || exit 1;);
-#         on:
-#           tags: true
-#         skip_cleanup: true
 
+jobs:
+    include:
+        - stage: Warm Up Cache & Lint & Build Dist
+          name:  Warm Up Cache & Lint & Build Dist
+          env: HEAD_SHA_BRANCH="$(git merge-base origin/$TRAVIS_BRANCH HEAD)"
+          script:
+            echo 'Warm'
+        - stage: Unit test
+          if: HEAD_SHA_BRANCH ='c8274bba1530e9705dc98d7466b2d1db420a473c'
+          name: core
+          script:  echo 'core'
+        - stage: Unit test
+          name: content
+          script:  echo 'content'
+        - stage: Unit test
+          if: HEAD_SHA_BRANCH ='c8274bba1530e9705dc98d7466b2d1db420a473c'
+          name: process
+          script: echo 'process'
 
 # Send coverage data to codecov
 after_success:
     bash <(curl -s https://codecov.io/bash) -X gcov
+
+cache:
+  directories:
+  - node_modules
+  - demo-shell/dist
+  - tmp
