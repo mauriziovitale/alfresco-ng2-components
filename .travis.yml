@@ -9,7 +9,9 @@ node_js:
   - '8.9.4'
 
 install:
-    echo "no install"
+    - echo "no install"
+    - export HEAD_SHA_BRANCH="$(git merge-base origin/$TRAVIS_BRANCH HEAD)"
+    - echo "Stampo1:" $HEAD_SHA_BRANCH
 
 branches:
   only:
@@ -43,9 +45,9 @@ jobs:
     include:
         - stage: Warm Up Cache & Lint & Build Dist
           name:  Warm Up Cache & Lint & Build Dist
-          env: HEAD_SHA_BRANCH="$(git merge-base origin/$TRAVIS_BRANCH HEAD)"
           script:
-            echo 'Warm'
+            - echo "Stampo2:" $HEAD_SHA_BRANCH
+            - echo 'Warm'
         - stage: Unit test
           if: HEAD_SHA_BRANCH ='c8274bba1530e9705dc98d7466b2d1db420a473c'
           name: core
