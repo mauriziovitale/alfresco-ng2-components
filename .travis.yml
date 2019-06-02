@@ -22,10 +22,8 @@ branches:
   - /.*beta.*/
   - /.*greenkeeper.*/
 
-script:
-    - export HEAD_SHA_BRANCH="core"
-    - echo "Stampo1:" $HEAD_SHA_BRANCH
-
+env:
+    - HEAD_SHA_BRANCH="core"
 
 # TRAVIS_PULL_REQUEST == false means is running on dev branch and is not a PR
 stages:
