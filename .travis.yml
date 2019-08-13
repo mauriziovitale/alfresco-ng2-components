@@ -46,9 +46,9 @@ before_deploy:
   - export TRAVIS_TAG=$(grep -m1 version package.json | awk '{ print $2 }' | sed 's/[", ]//g')
   - echo "Create tag:" ${TRAVIS_TAG}
   - git tag ${TRAVIS_TAG}
-  - export RELEASE_FILE_NAME=${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}
+  - export RELEASE_FILE_NAME=${TRAVIS_REPO_SLUG}-${TRAVIS_TAG}
   - echo "Create zip:" ${RELEASE_FILE_NAME}
-  - tar -zcf ${RELEASE_FILE_NAME}.tar.gz ${REPO}
+  - tar -zcf ${RELEASE_FILE_NAME}.tar.gz ./assets
 
 deploy:
   provider: releases
