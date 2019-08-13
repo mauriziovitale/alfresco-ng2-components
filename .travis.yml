@@ -35,11 +35,11 @@ jobs:
         - stage: Warm Up Cache
           script:
           - npm install
-          - npm run build:prod || exit 1
+          - ng build --prod
         - stage: Warm Up Cache & Lint & Build Dist
           script:
           - npm install
-          - npm run build:prod || exit 1
+          - ng build --prod
 
 before_deploy:
   # Set up git user name and tag this commit
