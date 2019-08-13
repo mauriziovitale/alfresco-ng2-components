@@ -43,17 +43,13 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "YOUR GIT USER NAME"
   - git config --local user.email "YOUR GIT USER EMAIL"
-  - export TRAVIS_TAG=2.7.0
+  - export TRAVIS_TAG=2.7.1
   - echo "Create tag:" $TRAVIS_TAG
   - git tag $TRAVIS_TAG
-  - export RELEASE_FILE_NAME=alfresco-components-${TRAVIS_TAG}
-  - echo "Create zip:" ${RELEASE_FILE_NAME}
-  - tar -zcf ${RELEASE_FILE_NAME}.tar.gz ./assets
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file: ${RELEASE_FILE_NAME}.tar.gz
   skip_cleanup: true
 
 # Send coverage data to codecov
