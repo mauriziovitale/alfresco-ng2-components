@@ -1,36 +1,22 @@
-git:
-  depth: 3
-  quiet: true
 language: node_js
 dist: trusty
-sudo: required
+sudo: false
 node_js:
- # Use the explicit NodeJS LTS version 8.9.4 to avoid any automatic upgrade of the version.
   - '8.9.4'
 
 install:
-    - echo "no install"
-    - export HEAD_SHA_BRANCH="$(git merge-base origin/$TRAVIS_BRANCH HEAD)"
-    - echo "Stampo1:" $HEAD_SHA_BRANCH
+  echo "no install"
 
 branches:
   only:
   - master
   - development
-  - /.*old-env.*/
-  - /.*next-release.*/
-  - /.*beta.*/
-  - /.*greenkeeper.*/
 
-env:
-    - HEAD_SHA_BRANCH="core"
-
-# TRAVIS_PULL_REQUEST == false means is running on dev branch and is not a PR
 stages:
+  - name: Warm Up Cache
+    if: branch = master
   - name: Warm Up Cache & Lint & Build Dist
-  - name: Unit test
-  - name: e2e Test
-  - name: Deploy PR
+    if: branch != master
 
 addons:
     chrome: stable
@@ -39,37 +25,46 @@ before_script:
     - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
 
 before_install:
-    - export CHROME_BIN=chromium-browser
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
-    - sleep 3 # give xvfb some time to start
+  - export CHROME_BIN=chromium-browser
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 
 jobs:
     include:
-        - stage: Warm Up Cache & Lint & Build Dist
-          name:  Warm Up Cache & Lint & Build Dist
+        - stage: Warm Up Cache
           script:
-            - echo "Stampo2:" $HEAD_SHA_BRANCH
-            - echo 'Warm'
-        - stage: Unit test
-          if: HEAD_SHA_BRANCH = 'core'
-          name: core
-          script:  echo 'core'
-        - stage: Unit test
-          if: HEAD_SHA_BRANCH = 'foo'
-          name: content
-          script:  echo 'content'
-        - stage: Unit test
-          if: HEAD_SHA_BRANCH = 'core'
-          name: process
-          script: echo 'process'
+          - npm install @alfresco/adf-cli@alpha
+          - ./scripts/update-commit-sha.sh -gnu
+          - npm install
+          - npm run lint || exit 1
+          - npm run build:prod || exit 1
+        - stage: Warm Up Cache & Lint & Build Dist
+          script:
+          - npm install @alfresco/adf-cli@alpha
+          - ./node_modules/@alfresco/adf-cli/bin/adf-cli update-version --$ADF_RELEASE_VERSION --pathPackage "$(pwd)"
+          - ./scripts/update-commit-sha.sh -gnu
+          - npm install
+          - npm run lint || exit 1
+          - npm run build:prod || exit 1
+
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "YOUR GIT USER NAME"
+  - git config --local user.email "YOUR GIT USER EMAIL"
+  - export TRAVIS_TAG=$(grep -m1 version package.json | awk '{ print $2 }' | sed 's/[", ]//g')
+  - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
 
 # Send coverage data to codecov
 after_success:
-    bash <(curl -s https://codecov.io/bash) -X gcov
+  bash <(curl -s https://codecov.io/bash) -X gcov
 
 cache:
   directories:
   - node_modules
-  - demo-shell/dist
-  - tmp
+  - dist
