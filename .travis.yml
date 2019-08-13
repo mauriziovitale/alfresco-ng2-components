@@ -43,10 +43,10 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "YOUR GIT USER NAME"
   - git config --local user.email "YOUR GIT USER EMAIL"
-  - export TRAVIS_TAG=$(grep -m1 version package.json | awk '{ print $2 }' | sed 's/[", ]//g')
-  - echo "Create tag:" ${TRAVIS_TAG}
-  - git tag ${TRAVIS_TAG}
-  - export RELEASE_FILE_NAME=${TRAVIS_REPO_SLUG}-${TRAVIS_TAG}
+  - export TRAVIS_TAG=2.7.0
+  - echo "Create tag:" $TRAVIS_TAG
+  - git tag $TRAVIS_TAG
+- export RELEASE_FILE_NAME=alfresco-components-${TRAVIS_TAG}
   - echo "Create zip:" ${RELEASE_FILE_NAME}
   - tar -zcf ${RELEASE_FILE_NAME}.tar.gz ./assets
 
