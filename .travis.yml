@@ -46,7 +46,7 @@ before_deploy:
   - export TRAVIS_TAG=2.7.0
   - echo "Create tag:" $TRAVIS_TAG
   - git tag $TRAVIS_TAG
-- export RELEASE_FILE_NAME=alfresco-components-${TRAVIS_TAG}
+  - export RELEASE_FILE_NAME=alfresco-components-${TRAVIS_TAG}
   - echo "Create zip:" ${RELEASE_FILE_NAME}
   - tar -zcf ${RELEASE_FILE_NAME}.tar.gz ./assets
 
