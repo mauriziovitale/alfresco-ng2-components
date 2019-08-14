@@ -49,7 +49,9 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  body: \r\n\r\n---\r\nTitle: Release notes v3.4.0\r\n---\r\n\r\n# Alfresco Application Development Framework (ADF) version 3.4.0 Release Note\r\n\r\nThese release notes provide information about the **3.4.0 release** of the Alfresco Application Development Framework.\r\n
+  body: "Thi is a test /
+  on 3 line
+  bla bla"
   skip_cleanup: true
 
 # Send coverage data to codecov
