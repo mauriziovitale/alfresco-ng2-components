@@ -51,7 +51,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  body: "${BODY}"
+  body: "# Alfresco Application Development Framework, version 2.5.0 Release Note\n\nThese release notes provide information about the **2.5.0 release**\nof the Alfresco Application Development Framework.\nThis is the latest **General Available**\nrelease of the Application Development Framework, which contains the Angular components to build a Web Application on top of the Alfresco Platform.\nThe release can be found on GitHub at\n[this location.](https://github.com/Alfresco/alfresco-ng2-components/releases/tag/1.7.0)"
   skip_cleanup: true
 
 # Send coverage data to codecov
