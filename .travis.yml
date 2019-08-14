@@ -44,12 +44,12 @@ before_deploy:
   - export TRAVIS_TAG=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
   - echo "Create tag:" $TRAVIS_TAG
   - git tag $TRAVIS_TAG
-  - export BODY=$(cat ./docs/release-notes/RelNote250.md)
+  - export BODY=$(cat ./docs/release-notes/RelNote250.md | awk  '{gsub("\\\\n","\n")};1')
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  body: "# Alfresco Application Development Framework, version 2.5.0 Release Note double\\n\\nThese release quadruple\\\\n notes skip/\n provide information about the **2.5.0 release**\nof the Alfresco Application Development Framework.\nThis is the latest **General Available**\nrelease of the Application Development Framework, which contains the Angular components to build a Web Application on top of the Alfresco Platform.\nThe release can be found on GitHub at\n[this location.](https://github.com/Alfresco/alfresco-ng2-components/releases/tag/1.7.0)"
+  body: "$BODY"
   skip_cleanup: true
 
 # Send coverage data to codecov

@@ -6,3 +6,4 @@ This is the latest **General Available**
 release of the Application Development Framework, which contains the Angular components to build a Web Application on top of the Alfresco Platform.
 The release can be found on GitHub at
 [this location.](https://github.com/Alfresco/alfresco-ng2-components/releases/tag/1.7.0)
+
