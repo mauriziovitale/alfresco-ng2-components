@@ -51,7 +51,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  body: "Test release"
+  body: "${BODY}"
   skip_cleanup: true
 
 # Send coverage data to codecov
