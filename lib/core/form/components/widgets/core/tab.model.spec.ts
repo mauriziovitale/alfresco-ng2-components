@@ -32,7 +32,8 @@ describe('TabModel', () => {
         let model = new TabModel(null, json);
         expect(model.id).toBe(json.id);
         expect(model.title).toBe(json.title);
-        expect(model.isVisible).toBe(true);
+        expect(model.isVisible).toBe(false);
+
     });
 
     it('should not setup with json config', () => {
